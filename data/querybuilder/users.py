@@ -30,6 +30,14 @@ class UserBuilder():
         user = await self.db.select_object(session, stmt)
         return user
 
+    async def select_user_by_id(self, session, user_id: str):
+        """Select user id and password hash by user id."""
+        stmt = select(Users).options(
+            load_only(Users.id, Users.password)
+        ).where(Users.id == user_id)
+        user = await self.db.select_object(session, stmt)
+        return user
+
     async def clear_user_token(
         self,
         session,
